@@ -16,7 +16,7 @@ public class Playercontroll : MonoBehaviour
 
     public GameObject firePrefab;   // กระสุน
     public Transform firePoint;     // จุดที่ยิงกระสุนออก (ตั้งค่าใน Inspector)
-
+    
     public float speed = 7f;
     public float jump = 12f;
     public int maxJumpCount = 2;
