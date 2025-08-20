@@ -25,38 +25,43 @@ public class Playercontroll : MonoBehaviour
         rb.freezeRotation = true; // ป้องกันล้ม
     }
 
-    void Update()
+   void Update()
+{
+     // เดินซ้าย/ขวา
+    Move = Input.GetAxisRaw("Horizontal");
+    rb.velocity = new Vector2(Move * speed, rb.velocity.y);
+
+    // พลิกตัวละคร
+    if (Move > 0 && !facingRight)
+        Flip();
+    else if (Move < 0 && facingRight)
+        Flip();
+
+    // Animation Speed
+    if(anim != null)
+        anim.SetFloat("speed", Mathf.Abs(Move));
+
+    // Jump (Space หรือ UpArrow)
+    if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow)) 
+        && jumpCount < maxJumpCount)
     {
-        // เดินซ้าย/ขวา
-        Move = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(Move * speed, rb.velocity.y);
-
-        // พลิกตัวละคร
-        if (Move > 0 && !facingRight)
-            Flip();
-        else if (Move < 0 && facingRight)
-            Flip();
-
-        // Animation Speed
+        rb.velocity = new Vector2(rb.velocity.x, jump);
+        jumpCount++;
+        grounded = false;
         if(anim != null)
-            anim.SetFloat("speed", Mathf.Abs(Move));
-
-        // Jump (Space หรือ UpArrow)
-        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow)) 
-            && jumpCount < maxJumpCount)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jump);
-            jumpCount++;
-            grounded = false;
-            if(anim != null)
-                anim.SetBool("grounded", false);
-        }
-
-        // Grounded animation
-        if(anim != null)
-            anim.SetBool("grounded", grounded);
+            anim.SetBool("grounded", false);
     }
 
+    // Grounded animation
+    if(anim != null)
+        anim.SetBool("grounded", grounded);
+
+    // **Shoot animation ครั้งเดียว**
+    if (Input.GetKeyDown(KeyCode.Z) && anim != null)
+    {
+        anim.SetTrigger("shoot"); // ยิงครั้งเดียวเมื่อกด Z
+    }
+}
     private void Flip()
     {
         facingRight = !facingRight;
