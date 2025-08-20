@@ -4,11 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class Playercontroll : MonoBehaviour
 {
     private Animator anim;
     private Rigidbody2D rb;
     private float Move;
+
+    public GameObject firePrefab;   // กระสุน
+    public Transform firePoint;     // จุดที่ยิงกระสุนออก (ตั้งค่าใน Inspector)
 
     public float speed = 7f;
     public float jump = 12f;
@@ -25,48 +32,58 @@ public class Playercontroll : MonoBehaviour
         rb.freezeRotation = true; // ป้องกันล้ม
     }
 
-   void Update()
-{
-     // เดินซ้าย/ขวา
-    Move = Input.GetAxisRaw("Horizontal");
-    rb.velocity = new Vector2(Move * speed, rb.velocity.y);
-
-    // พลิกตัวละคร
-    if (Move > 0 && !facingRight)
-        Flip();
-    else if (Move < 0 && facingRight)
-        Flip();
-
-    // Animation Speed
-    if(anim != null)
-        anim.SetFloat("speed", Mathf.Abs(Move));
-
-    // Jump (Space หรือ UpArrow)
-    if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow)) 
-        && jumpCount < maxJumpCount)
+    void Update()
     {
-        rb.velocity = new Vector2(rb.velocity.x, jump);
-        jumpCount++;
-        grounded = false;
+        // เดินซ้าย/ขวา
+        Move = Input.GetAxisRaw("Horizontal");
+        rb.velocity = new Vector2(Move * speed, rb.velocity.y);
+
+        // พลิกตัวละคร
+        if (Move > 0 && !facingRight)
+            Flip();
+        else if (Move < 0 && facingRight)
+            Flip();
+
+        // Animation Speed
         if(anim != null)
-            anim.SetBool("grounded", false);
+            anim.SetFloat("speed", Mathf.Abs(Move));
+
+        // Jump (Space หรือ UpArrow)
+        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow)) 
+            && jumpCount < maxJumpCount)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jump);
+            jumpCount++;
+            grounded = false;
+            if(anim != null)
+                anim.SetBool("grounded", false);
+        }
+
+        // Grounded animation
+        if(anim != null)
+            anim.SetBool("grounded", grounded);
+
+        // **ยิงเมื่อกด Z**
+        if (Input.GetKeyDown(KeyCode.Z) && anim != null)
+        {
+            anim.SetTrigger("shoot"); // เล่นอนิเมชันยิง
+
+            // สร้างกระสุนที่ firePoint
+            GameObject bullet = Instantiate(firePrefab, firePoint.position, Quaternion.identity);
+
+            // ให้กระสุนหันตามทิศทางตัวละคร
+            Vector3 scale = bullet.transform.localScale;
+            if (!facingRight)
+                scale.x *= -1;
+            bullet.transform.localScale = scale;
+        }
     }
 
-    // Grounded animation
-    if(anim != null)
-        anim.SetBool("grounded", grounded);
-
-    // **Shoot animation ครั้งเดียว**
-    if (Input.GetKeyDown(KeyCode.Z) && anim != null)
-    {
-        anim.SetTrigger("shoot"); // ยิงครั้งเดียวเมื่อกด Z
-    }
-}
     private void Flip()
     {
         facingRight = !facingRight;
         Vector3 scale = transform.localScale;
-        scale.x *= -1; // พลิกแกน X
+        scale.x *= -1; // พลิกแกน X ของ Player
         transform.localScale = scale;
     }
 
