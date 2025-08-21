@@ -44,6 +44,7 @@ public class MainMenu : MonoBehaviour
         }
 
         SceneManager.LoadScene(sceneName);
+        
         // ถ้าอยากนุ่มขึ้น เปลี่ยนเป็น:
         // StartCoroutine(LoadAsync(sceneName));
     }
