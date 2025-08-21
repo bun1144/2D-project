@@ -4,12 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class Playercontroll : MonoBehaviour
 {
     private Animator anim;
     private Rigidbody2D rb;
     private float Move;
 
+    public GameObject firePrefab;   // กระสุน
+    public Transform firePoint;     // จุดที่ยิงกระสุนออก (ตั้งค่าใน Inspector)
+    
     public float speed = 7f;
     public float jump = 12f;
     public int maxJumpCount = 2;
@@ -55,13 +62,28 @@ public class Playercontroll : MonoBehaviour
         // Grounded animation
         if(anim != null)
             anim.SetBool("grounded", grounded);
+
+        // **ยิงเมื่อกด Z**
+        if (Input.GetKeyDown(KeyCode.Z) && anim != null)
+        {
+            anim.SetTrigger("shoot"); // เล่นอนิเมชันยิง
+
+            // สร้างกระสุนที่ firePoint
+            GameObject bullet = Instantiate(firePrefab, firePoint.position, Quaternion.identity);
+
+            // ให้กระสุนหันตามทิศทางตัวละคร
+            Vector3 scale = bullet.transform.localScale;
+            if (!facingRight)
+                scale.x *= -1;
+            bullet.transform.localScale = scale;
+        }
     }
 
     private void Flip()
     {
         facingRight = !facingRight;
         Vector3 scale = transform.localScale;
-        scale.x *= -1; // พลิกแกน X
+        scale.x *= -1; // พลิกแกน X ของ Player
         transform.localScale = scale;
     }
 
