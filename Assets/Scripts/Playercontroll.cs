@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
 
 public class Playercontroll : MonoBehaviour
 {
@@ -25,6 +23,8 @@ public class Playercontroll : MonoBehaviour
     private bool grounded;
     private bool facingRight = true; // ตัวละครหันขวาเริ่มต้น
 
+    public float fireRate = 0.5f;   // เวลาหน่วงระหว่างการยิง (วินาที)
+    private float nextFireTime = 0f;
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -58,25 +58,32 @@ public class Playercontroll : MonoBehaviour
             if(anim != null)
                 anim.SetBool("grounded", false);
         }
+        if ((Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) && !grounded)
+{
+    rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 0.3f); // เพิ่มความเร็วตกลงเรื่อยๆ
+}
 
         // Grounded animation
-        if(anim != null)
+        if (anim != null)
             anim.SetBool("grounded", grounded);
 
         // **ยิงเมื่อกด Z**
-        if (Input.GetKeyDown(KeyCode.Z) && anim != null)
-        {
-            anim.SetTrigger("shoot"); // เล่นอนิเมชันยิง
+       if (Input.GetKeyDown(KeyCode.Z) && anim != null && Time.time >= nextFireTime)
+    {
+        anim.SetTrigger("shoot"); // เล่นอนิเมชันยิง
 
-            // สร้างกระสุนที่ firePoint
-            GameObject bullet = Instantiate(firePrefab, firePoint.position, Quaternion.identity);
+        // สร้างกระสุนที่ firePoint
+        GameObject bullet = Instantiate(firePrefab, firePoint.position, Quaternion.identity);
 
-            // ให้กระสุนหันตามทิศทางตัวละคร
-            Vector3 scale = bullet.transform.localScale;
-            if (!facingRight)
-                scale.x *= -1;
-            bullet.transform.localScale = scale;
-        }
+        // ให้กระสุนหันตามทิศทางตัวละคร
+        Vector3 scale = bullet.transform.localScale;
+        if (!facingRight)
+            scale.x *= -1;
+        bullet.transform.localScale = scale;
+
+        // ตั้งเวลาให้ยิงได้อีกครั้งหลังจาก cooldown
+        nextFireTime = Time.time + fireRate;
+    }
     }
 
     private void Flip()
