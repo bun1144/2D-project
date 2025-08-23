@@ -68,22 +68,25 @@ public class Playercontroll : MonoBehaviour
             anim.SetBool("grounded", grounded);
 
         // **ยิงเมื่อกด Z**
-       if (Input.GetKeyDown(KeyCode.Z) && anim != null && Time.time >= nextFireTime)
-    {
-        anim.SetTrigger("shoot"); // เล่นอนิเมชันยิง
+  if (Input.GetKeyDown(KeyCode.Z) && anim != null && Time.time >= nextFireTime)
+{
+    anim.SetTrigger("shoot"); // เล่นอนิเมชันยิง
 
-        // สร้างกระสุนที่ firePoint
-        GameObject bullet = Instantiate(firePrefab, firePoint.position, Quaternion.identity);
+    // กำหนดทิศทางยิงตาม Player หัน
+    Vector3 dir = facingRight ? Vector3.right : Vector3.left;
 
-        // ให้กระสุนหันตามทิศทางตัวละคร
-        Vector3 scale = bullet.transform.localScale;
-        if (!facingRight)
-            scale.x *= -1;
-        bullet.transform.localScale = scale;
+    // สร้างกระสุน
+    GameObject bullet = Instantiate(firePrefab, firePoint.position, Quaternion.identity);
+    ProjectileMove move = bullet.AddComponent<ProjectileMove>();
+    move.velocity = dir * 10f; // ความเร็วกระสุน
+    move.shooterTag = "Player"; 
 
-        // ตั้งเวลาให้ยิงได้อีกครั้งหลังจาก cooldown
-        nextFireTime = Time.time + fireRate;
-    }
+    // หมุน sprite ให้หันไปทางยิง
+    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+    bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+    nextFireTime = Time.time + fireRate;
+}
     }
 
     private void Flip()
