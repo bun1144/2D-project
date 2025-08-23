@@ -25,6 +25,7 @@ public class Playercontroll : MonoBehaviour
 
     public float fireRate = 0.5f;   // เวลาหน่วงระหว่างการยิง (วินาที)
     private float nextFireTime = 0f;
+   
     void Start()
     {
         anim = GetComponent<Animator>();
