@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0, z: 0}
-  damage: 10
+  damage: 9
   shooterTag: 
   minX: -10
   maxX: 10
