@@ -1243,7 +1243,7 @@ GameObject:
   - component: {fileID: 562951770}
   m_Layer: 0
   m_Name: Triangle (4)
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1256,7 +1256,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 562951768}
   m_LocalRotation: {x: 0, y: 0, z: 0.70716846, w: 0.7070451}
-  m_LocalPosition: {x: -10.07, y: 1.14, z: 9.999136}
+  m_LocalPosition: {x: -10.02, y: 1.14, z: 9.999136}
   m_LocalScale: {x: 4.966776, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1693,7 +1693,7 @@ GameObject:
   - component: {fileID: 657282562}
   m_Layer: 0
   m_Name: Triangle (5)
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1706,7 +1706,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657282560}
   m_LocalRotation: {x: 0, y: 0, z: 0.70716846, w: 0.7070451}
-  m_LocalPosition: {x: 7.36, y: 1.02, z: 9.999136}
+  m_LocalPosition: {x: 7.19, y: 1.02, z: 9.999136}
   m_LocalScale: {x: 4.966776, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
