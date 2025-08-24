@@ -3,53 +3,69 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance { get; private set; }
+    public static AudioManager Instance;
 
     [Header("Mixer")]
-    [SerializeField] private AudioMixer masterMixer;
-    [SerializeField] private string musicParam = "MusicVol"; // ชื่อต้องตรงกับ Exposed Param
-    [SerializeField] private string sfxParam = "SFXVol";
+    public AudioMixer masterMixer;
+    public string musicParam = "MusicVol";
+    public string sfxParam = "SFXVol";
 
     [Header("Defaults (0..1)")]
     [Range(0f, 1f)] public float defaultMusic = 0.7f;
     [Range(0f, 1f)] public float defaultSfx = 0.8f;
 
+    private AudioSource sfxSource;
+
     void Awake()
     {
-        // Singleton + ข้ามซีน
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // โหลดค่าที่เคยเซฟไว้
-        float music = PlayerPrefs.GetFloat("MusicVolume", defaultMusic);
-        float sfx   = PlayerPrefs.GetFloat("SFXVolume", defaultSfx);
+        // เตรียม AudioSource สำหรับ SFX
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        sfxSource.playOnAwake = false;
+        sfxSource.loop = false;
+        // ให้เสียงนี้ออกทาง Group SFX ใน Mixer
+        sfxSource.outputAudioMixerGroup = masterMixer.FindMatchingGroups("SFX")[0];
 
-        SetMusicVolume(music);
-        SetSfxVolume(sfx);
+        // เซ็ตค่า default
+        SetMusicVolume(defaultMusic);
+        SetSfxVolume(defaultSfx);
     }
 
-    // v: 0..1 → dB
-    public void SetMusicVolume(float v)
+    public void SetMusicVolume(float value)
     {
-        PlayerPrefs.SetFloat("MusicVolume", v);
-        masterMixer.SetFloat(musicParam, LinearToDb(v));
+        float dB = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
+        masterMixer.SetFloat(musicParam, dB);
     }
 
-    public void SetSfxVolume(float v)
+    public void SetSfxVolume(float value)
     {
-        PlayerPrefs.SetFloat("SFXVolume", v);
-        masterMixer.SetFloat(sfxParam, LinearToDb(v));
+        float dB = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
+        masterMixer.SetFloat(sfxParam, dB);
     }
 
-    // แปลง 0..1 เป็นเดซิเบล: 0 = -80dB (เงียบ), 1 = 0dB
-    private float LinearToDb(float v)
+    public float GetMusicVolume01()
     {
-        if (v <= 0.0001f) return -80f;         // mute
-        return Mathf.Log10(v) * 20f;           // standard
+        masterMixer.GetFloat(musicParam, out float dB);
+        return Mathf.Pow(10f, dB / 20f);
     }
 
-    // ใช้ถ้าต้องอ่านกลับไปตั้งค่า Slider ตอนเปิดหน้า Options
-    public float GetMusicVolume01() => PlayerPrefs.GetFloat("MusicVolume", defaultMusic);
-    public float GetSfxVolume01()   => PlayerPrefs.GetFloat("SFXVolume", defaultSfx);
+    public float GetSfxVolume01()
+    {
+        masterMixer.GetFloat(sfxParam, out float dB);
+        return Mathf.Pow(10f, dB / 20f);
+    }
+
+    // ใช้เล่น SFX เช่นเสียงปุ่ม
+    public void PlaySfx(AudioClip clip)
+    {
+        if (clip != null)
+            sfxSource.PlayOneShot(clip);
+    }
 }
