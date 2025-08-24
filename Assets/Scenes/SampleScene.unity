@@ -2659,10 +2659,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePrefab: {fileID: 1640816288580267406, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
   firePoint: {fileID: 1148538687}
+  fireRate: 0.5
   speed: 10
   jump: 6
   maxJumpCount: 2
-  fireRate: 0.5
+  jumpSfx: {fileID: 8300000, guid: d4aecabf2a9e7d54fa99070ff78448c8, type: 3}
+  attackSfx: {fileID: 8300000, guid: a9bd7685f8924884ba9fa171539a3383, type: 3}
+  sfxMinInterval: 0.05
 --- !u!1 &1142431124
 GameObject:
   m_ObjectHideFlags: 0

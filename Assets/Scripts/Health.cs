@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections; // ✅ ต้องใส่ด้วยเพื่อใช้ Coroutine
+using System.Collections; // ใช้ Coroutine
 
 public class Health : MonoBehaviour
 {
@@ -9,41 +9,62 @@ public class Health : MonoBehaviour
     public int currentHealth;
     public HealthBar healthBar;
 
+    private bool isDead = false; // กันเรียกซ้ำเมื่อโดนดาเมจซ้อน
+
     void Start()
     {
         anim = GetComponent<Animator>();
         currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
+        if (healthBar != null) healthBar.SetMaxHealth(maxHealth);
     }
 
     public void TakeDamage(int damage)
     {
+        if (isDead) return;
+
         currentHealth -= damage;
-        Debug.Log(gameObject.name + " HP: " + currentHealth);
-        anim.SetTrigger("hurt");
-        healthBar.SetHealth(currentHealth);
+        Debug.Log($"{gameObject.name} HP: {currentHealth}");
+
+        if (anim != null) anim.SetTrigger("hurt");
+        if (healthBar != null) healthBar.SetHealth(currentHealth);
 
         if (currentHealth <= 0)
         {
-            anim.SetTrigger("die"); // เล่น animation ตาย
-            GetComponent<Collider2D>().enabled = false; //
+            isDead = true;
+
+            if (anim != null) anim.SetTrigger("die");
+            var col = GetComponent<Collider2D>();
+            if (col) col.enabled = false;
 
             if (CompareTag("Boss"))
             {
+                // ⏱️ หยุดและบันทึกเวลา "ทันที" ที่บอสตาย (ไม่รวมดีเลย์ 2 วิ)
+                if (GameTimer.Instance != null)
+                {
+                    var sec = GameTimer.Instance.StopAndSave();
+                    Debug.Log($"[Timer] StopAndSave = {sec:F2}s");
+                }
+
                 Debug.Log("Boss ตาย → ไปหน้า Win");
-                StartCoroutine(GoToScene("Win", 2f));
+                StartCoroutine(GoToSceneRealtime("Win", 2f));
             }
             else if (CompareTag("Player"))
             {
                 Debug.Log("Player ตาย → ไปหน้า Lose");
-                StartCoroutine(GoToScene("Lose", 2f));
+                StartCoroutine(GoToSceneRealtime("Lose", 2f));
             }
         }
     }
 
-    IEnumerator GoToScene(string sceneName, float delay)
+    // ใช้ Realtime หน่วงเวลา เพื่อไม่ติด Time.timeScale (เช่นถ้าคุณ pause เกม)
+    IEnumerator GoToSceneRealtime(string sceneName, float delay)
     {
-        yield return new WaitForSeconds(delay); // 
+        float t = 0f;
+        while (t < delay)
+        {
+            t += Time.unscaledDeltaTime;
+            yield return null;
+        }
         SceneManager.LoadScene(sceneName);
     }
 }

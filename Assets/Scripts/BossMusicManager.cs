@@ -2,54 +2,58 @@ using UnityEngine;
 
 public class BossMusicManager : MonoBehaviour
 {
-    public AudioSource audioSource;
+    [Header("Clips")]
     public AudioClip backgroundMusic;
     public AudioClip bossMusic;
     public AudioClip lowHealthMusic;
-    public Health bossHealth;              // Reference บอส
+
+    [Header("Refs")]
+    public Health bossHealth;
+
+    [Header("Options")]
+    public int lowHealthThreshold = 50;
     private bool lowHealthTriggered = false;
 
-   
     void Start()
     {
-        if (audioSource == null)
-            audioSource = gameObject.AddComponent<AudioSource>();
+        // 0) กันพลาด: ปิด playOnAwake ของ AudioSource ที่เผลอใส่มา
+        AudioManager.Instance.DisablePlayOnAwakeInScene();
 
-        PlayMusic(backgroundMusic);
+        // 1) หยุดเพลง loop อื่น ๆ ที่อาจค้างจากซีนก่อน
+        AudioManager.Instance.StopOtherLoopingMusic();
+
+        // 2) เล่นเพลงบอส (หรือเพลงบรรยากาศ)
+        if (bossMusic != null)
+            PlayMusic(bossMusic);
+        else if (backgroundMusic != null)
+            PlayMusic(backgroundMusic);
+
+        if (bossHealth == null) bossHealth = FindObjectOfType<Health>();
     }
 
-     void Update()
+    void Update()
     {
-        if (bossHealth != null && bossHealth.currentHealth <= 50 && !lowHealthTriggered)
+        if (!lowHealthTriggered && bossHealth != null)
         {
-            PlayMusic(lowHealthMusic);
-            lowHealthTriggered = true;
+            if (bossHealth.currentHealth <= lowHealthThreshold)
+            {
+                if (lowHealthMusic != null)
+                {
+                    PlayMusic(lowHealthMusic);
+                    lowHealthTriggered = true;
+                }
+            }
         }
     }
 
-
-
     public void PlayMusic(AudioClip clip)
     {
-        if (audioSource.isPlaying)
-            audioSource.Stop();
-
-        audioSource.clip = clip;
-        audioSource.loop = true;
-        audioSource.volume = 0.1f; // ค่า default เต็มเสียง
-        audioSource.Play();
+        if (clip == null) return;
+        AudioManager.Instance.PlayMusic(clip, true);
     }
 
     public void OnBossSceneStart()
     {
-        PlayMusic(bossMusic);
-    }
-
-   
-
-    // 🔹 ฟังก์ชันเบาเสียง
-    public void SetVolume(float value)
-    {
-        audioSource.volume = Mathf.Clamp01(value); // จำกัดไม่ให้เกิน 0–1
+        if (bossMusic != null) PlayMusic(bossMusic);
     }
 }

@@ -54,6 +54,9 @@ public class PauseMenu : MonoBehaviour
         isPaused = true;
         Time.timeScale = 0f;
 
+        // ⏱️ หยุดตัวจับเวลา (สำคัญ!)
+        if (GameTimer.Instance != null) GameTimer.Instance.Pause();
+
         if (pauseMenuCanvas) pauseMenuCanvas.SetActive(true);
         if (panelPause)      panelPause.SetActive(true);
         if (panelSettings)   panelSettings.SetActive(false);
@@ -66,6 +69,9 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1f;
 
+        // ⏱️ ให้จับเวลาต่อ (สำคัญ!)
+        if (GameTimer.Instance != null) GameTimer.Instance.Resume();
+
         if (panelPause)      panelPause.SetActive(false);
         if (panelSettings)   panelSettings.SetActive(false);
         if (pauseMenuCanvas) pauseMenuCanvas.SetActive(false);
@@ -73,28 +79,35 @@ public class PauseMenu : MonoBehaviour
 
     public void Restart()
     {
+        // ออกจาก pause ก่อนโหลดซีนใหม่
+        isPaused = false;
         Time.timeScale = 1f;
+
+        // ไม่ต้อง StartNew ที่นี่ ให้ BossTimerStart ในซีน Boss เป็นคนเริ่มจับเวลาใหม่
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void QuitGame()
     {
-        // กลับไปที่หน้าเมนูหลัก
-        Time.timeScale = 1f;  // รีเซ็ตเวลา (เผื่อ pause อยู่)
+        // กลับเมนูหลัก
+        isPaused = false;
+        Time.timeScale = 1f;
+
+        // ไม่ต้อง stop/save เวลา (ไม่ใช่ Win) — ปล่อยให้ timer หยุด/รีเซ็ตตอนเข้าเมนูตามที่ออกแบบ
         SceneManager.LoadScene("Menu");
     }
 
     // ===== Settings Panel =====
     public void OpenSettingsPanel()
     {
-        // ยัง pause อยู่ แต่สลับจากเมนูพัก → เมนูตั้งค่า
+        // ยัง pause อยู่ แต่สลับไปหน้า Settings
         if (panelPause)    panelPause.SetActive(false);
         if (panelSettings) panelSettings.SetActive(true);
     }
 
     public void BackFromSettings()
     {
-        // กลับไปหน้าเมนูพักเกม (ยัง timeScale = 0)
+        // กลับไปหน้า Pause
         if (panelSettings) panelSettings.SetActive(false);
         if (panelPause)    panelPause.SetActive(true);
         FocusDefault();
