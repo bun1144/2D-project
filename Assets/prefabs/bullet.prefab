@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0, z: 0}
   damage: 9
-  shooterTag: 
+  shooterTag: Boss
   minX: -10
   maxX: 10
   minY: -6

@@ -205,7 +205,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &69341047
 GameObject:
@@ -324,25 +324,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clickSound: {fileID: 8300000, guid: 9e110a7a5de046f4dbc3de611c53f851, type: 3}
---- !u!1 &86402400 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1640816288580267406, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-  m_PrefabInstance: {fileID: 4891678378110336145}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &86402406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 86402400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1788596eacdc82e40b07ae7bde670d26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  lifeTime: 2
 --- !u!1 &110135789
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +406,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &159988485
 GameObject:
@@ -820,7 +801,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &361778708
 GameObject:
@@ -917,7 +898,7 @@ RectTransform:
   - {fileID: 784966963}
   - {fileID: 872562569}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2742,7 +2723,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "How to Play\n\nUse the Left Arrow (\u2190) or A key to move left.\n\nUse
     the Right Arrow (\u2192) or D key to move right.\n\nPress the Up Arrow (\u2191)
-    or the Space Bar to jump.\n\nPress Z to cast a fire spell."
+    or the Space Bar to jump.\n\nPress the Down Arrow (\u2193) or S key to fast landing\n\nPress
+    Z to cast a fire spell."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3228,7 +3210,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1394624639
 GameObject:
@@ -3312,7 +3294,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1437917975
 GameObject:
@@ -3456,7 +3438,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1582743010
 GameObject:
@@ -3678,7 +3660,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1753605024
 GameObject:
@@ -4175,7 +4157,7 @@ RectTransform:
   - {fileID: 521179822}
   - {fileID: 1142431125}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4367,7 +4349,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &2146624164
 GameObject:
@@ -4504,64 +4486,3 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2146624164}
   m_CullTransparentMesh: 1
---- !u!1001 &4891678378110336145
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1640816288580267406, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_Name
-      value: Charge_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2220620786558359710, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_SortingOrder
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 9159101783898177450, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 9159101783898177450, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.99
-      objectReference: {fileID: 0}
-    - target: {fileID: 9159101783898177450, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 9159101783898177450, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9159101783898177450, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9159101783898177450, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9159101783898177450, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9159101783898177450, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9159101783898177450, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9159101783898177450, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9159101783898177450, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e3ff5d0bccc8b5145b086757eedba6dd, type: 3}

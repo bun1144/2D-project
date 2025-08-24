@@ -1,11 +1,14 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections; // ✅ ต้องใส่ด้วยเพื่อใช้ Coroutine
 
 public class Health : MonoBehaviour
 {
     Animator anim;
     public int maxHealth = 100;
     public int currentHealth;
-     public HealthBar healthBar;
+    public HealthBar healthBar;
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -22,10 +25,25 @@ public class Health : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            if (anim != null)
-                anim.SetTrigger("die"); // เล่น animation ตาย
-            Destroy(gameObject, 2f);
+            anim.SetTrigger("die"); // เล่น animation ตาย
+            GetComponent<Collider2D>().enabled = false; //
 
+            if (CompareTag("Boss"))
+            {
+                Debug.Log("Boss ตาย → ไปหน้า Win");
+                StartCoroutine(GoToScene("Win", 2f));
+            }
+            else if (CompareTag("Player"))
+            {
+                Debug.Log("Player ตาย → ไปหน้า Lose");
+                StartCoroutine(GoToScene("Lose", 2f));
+            }
         }
+    }
+
+    IEnumerator GoToScene(string sceneName, float delay)
+    {
+        yield return new WaitForSeconds(delay); // 
+        SceneManager.LoadScene(sceneName);
     }
 }
