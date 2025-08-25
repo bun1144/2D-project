@@ -48,6 +48,7 @@ public class MainMenu : MonoBehaviour
         // ถ้าอยากนุ่มขึ้น เปลี่ยนเป็น:
         // StartCoroutine(LoadAsync(sceneName));
     }
+    
 
     // ตัวเลือก: โหลดแบบ Async (ถ้าอยากลื่นขึ้น)
     private System.Collections.IEnumerator LoadAsync(string sceneName)
