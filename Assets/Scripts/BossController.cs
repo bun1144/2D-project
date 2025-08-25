@@ -107,7 +107,7 @@ public class BossController : MonoBehaviour
         if (prefab == null) return;
 
         GameObject proj = Instantiate(prefab, pos, Quaternion.identity);
-        proj.tag = "BossBullet";
+        proj.tag = "Boss";
 
         // เพิ่ม HomingProjectile script
         HomingProjectile homing = proj.AddComponent<HomingProjectile>();
@@ -150,23 +150,25 @@ public class BossController : MonoBehaviour
     }
 
     void CreateProjectile(GameObject prefab, Vector3 pos, Vector3 velocity)
+{
+    if (prefab == null) return;
+
+    GameObject proj = Instantiate(prefab, pos, Quaternion.identity);
+
+    ProjectileMove move = proj.GetComponent<ProjectileMove>();
+    if (move == null) move = proj.AddComponent<ProjectileMove>();
+
+    move.velocity = velocity;
+    move.damage = 10;
+    move.shooterTag = gameObject.tag;   // ✅ ส่ง tag ของ Boss มาแทน
+
+    Collider2D bossCol = GetComponent<Collider2D>();
+    Collider2D projCol = proj.GetComponent<Collider2D>();
+    if (bossCol != null && projCol != null)
     {
-        if (prefab == null) return;
-
-        GameObject proj = Instantiate(prefab, pos, Quaternion.identity);
-        proj.tag = "BossBullet";
-
-        ProjectileMove move = proj.AddComponent<ProjectileMove>();
-        move.velocity = velocity;
-
-        Collider2D bossCol = GetComponent<Collider2D>();
-        Collider2D projCol = proj.GetComponent<Collider2D>();
-        if (bossCol != null && projCol != null)
-        {
-            Physics2D.IgnoreCollision(projCol, bossCol);
-        }
+        Physics2D.IgnoreCollision(projCol, bossCol);
     }
-
+}
     // ==================== SFX Helper ====================
     void PlaySfx(AudioClip clip, float volume01 = 1f)
     {

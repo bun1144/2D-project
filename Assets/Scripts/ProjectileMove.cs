@@ -26,21 +26,20 @@ public class ProjectileMove : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other)
+{
+    if (other == null) return;
+
+    // ✅ กันยิงโดนตัวเอง
+    if (!string.IsNullOrEmpty(shooterTag) && other.CompareTag(shooterTag))
+        return;
+
+    Destroy(gameObject);
+
+    var hp = other.GetComponent<Health>();
+    if (hp != null)
     {
-        
-        if (other == null) return;
-      //  if (other.CompareTag(shooterTag)) return;
-         Destroy(gameObject);
-       // Debug.Log($"Projectile hit: {other.name} (Tag: {other.tag})");
-
-        var hp = other.GetComponent<Health>();
-        if (hp != null)
-        {
-            hp.TakeDamage(damage);
-        }
-
-        // ✅ ลบกระสุนเสมอ
-        
-       
+        hp.TakeDamage(damage);
     }
+}
+
 }
